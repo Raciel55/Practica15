@@ -1,0 +1,41 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id       String @id @default(uuid())
+  name     String @unique
+  password String
+
+  empresas Empresa[]
+  convenios Convenio[]
+}
+
+model Empresa {
+  id            String @id @default(uuid())
+  name          String @unique
+  representante String
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
+
+model Convenio {
+  id        String @id @default(uuid())
+  fecha     String
+  concesion String
+  marca     String
+  submarca  String
+  modelo    Int
+  serie     String
+  placas    String
+  
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+}
